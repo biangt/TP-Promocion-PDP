@@ -1,8 +1,13 @@
 "use strict";
+/**
+ * @fileoverview Módulo de utilidades para la aplicación de gestión de tareas.
+ * Incluye funciones puras para estadísticas, validaciones, formateo y funciones impuras para interfaz.
+ */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.filtrarTareasActivas = filtrarTareasActivas;
 exports.contarTotalTareas = contarTotalTareas;
 exports.contarTareasPorEstado = contarTareasPorEstado;
 exports.contarTareasPorDificultad = contarTareasPorDificultad;
@@ -23,36 +28,53 @@ exports.imprimirCadena = imprimirCadena;
 const prompt_sync_1 = __importDefault(require("prompt-sync"));
 const types_js_1 = require("./types.js");
 const prompt = (0, prompt_sync_1.default)({ sigint: true });
-//ESTADISTICAS
 // ============================================
-// FUNCIONES PURAS - Estadísticas (Simplificadas)
+// FUNCIONES PURAS - Estadísticas
 // ============================================
 /**
- * Filtra tareas NO eliminadas (función pura).
+ * Filtra y retorna solo las tareas que no han sido marcadas como eliminadas.
+ * @pure
+ * @param {Tarea[]} tareas - Array de tareas a filtrar
+ * @returns {Tarea[]} Array con las tareas activas (no eliminadas)
  */
 function filtrarTareasActivas(tareas) {
     return tareas.filter(tarea => !tarea.getEliminada());
 }
 /**
- * Cuenta el total de tareas activas (función pura).
+ * Cuenta el total de tareas activas (no eliminadas).
+ * @pure
+ * @param {Tarea[]} tareas - Array de tareas
+ * @returns {number} Cantidad total de tareas activas
  */
 function contarTotalTareas(tareas) {
     return filtrarTareasActivas(tareas).length;
 }
 /**
- * Cuenta tareas por estado, excluyendo eliminadas (función pura).
+ * Cuenta cuántas tareas activas tienen un estado específico.
+ * @pure
+ * @param {Tarea[]} tareas - Array de tareas
+ * @param {Estado} estado - El estado a contar
+ * @returns {number} Cantidad de tareas con el estado especificado
  */
 function contarTareasPorEstado(tareas, estado) {
     return filtrarTareasActivas(tareas).filter(tarea => tarea.getEstado() === estado).length;
 }
 /**
- * Cuenta tareas por dificultad, excluyendo eliminadas (función pura).
+ * Cuenta cuántas tareas activas tienen una dificultad específica.
+ * @pure
+ * @param {Tarea[]} tareas - Array de tareas
+ * @param {Dificultad} dificultad - El nivel de dificultad a contar
+ * @returns {number} Cantidad de tareas con la dificultad especificada
  */
 function contarTareasPorDificultad(tareas, dificultad) {
     return filtrarTareasActivas(tareas).filter(tarea => tarea.getDificultad() === dificultad).length;
 }
 /**
- * Calcula el porcentaje de tareas por estado (función pura).
+ * Calcula el porcentaje de tareas activas que tienen un estado específico.
+ * @pure
+ * @param {Tarea[]} tareas - Array de tareas
+ * @param {Estado} estado - El estado a calcular
+ * @returns {number} Porcentaje redondeado de tareas con el estado especificado
  */
 function calcularPorcentajePorEstado(tareas, estado) {
     const total = contarTotalTareas(tareas);
@@ -62,7 +84,11 @@ function calcularPorcentajePorEstado(tareas, estado) {
     return Math.round((cantidad / total) * 100);
 }
 /**
- * Calcula el porcentaje de tareas por dificultad (función pura).
+ * Calcula el porcentaje de tareas activas que tienen una dificultad específica.
+ * @pure
+ * @param {Tarea[]} tareas - Array de tareas
+ * @param {Dificultad} dificultad - El nivel de dificultad a calcular
+ * @returns {number} Porcentaje redondeado de tareas con la dificultad especificada
  */
 function calcularPorcentajePorDificultad(tareas, dificultad) {
     const total = contarTotalTareas(tareas);
@@ -72,8 +98,11 @@ function calcularPorcentajePorDificultad(tareas, dificultad) {
     return Math.round((cantidad / total) * 100);
 }
 /**
- * Formatea las estadísticas como texto (función pura).
- * Aplicamos los cálculos directamente.
+ * Formatea todas las estadísticas de las tareas en un string visualmente atractivo.
+ * Incluye conteos y porcentajes por estado y dificultad.
+ * @pure
+ * @param {Tarea[]} tareas - Array de tareas
+ * @returns {string} String formateado con todas las estadísticas
  */
 function formatearEstadisticas(tareas) {
     const total = contarTotalTareas(tareas);
@@ -110,7 +139,10 @@ TOTAL DE TAREAS: ${total}
 `;
 }
 /**
- * Formatea una fecha a formato legible (función pura).
+ * Formatea una fecha a formato "dd/mm/aaaa".
+ * @pure
+ * @param {Date} fecha - Fecha a formatear
+ * @returns {string} Fecha formateada como "dd/mm/aaaa"
  */
 function formatoFecha(fecha) {
     const dia = fecha.getDate().toString().padStart(2, '0');
@@ -119,13 +151,19 @@ function formatoFecha(fecha) {
     return `${dia}/${mes}/${anio}`;
 }
 /**
- * Formatea fecha de edición (función pura).
+ * Formatea la fecha de edición a formato "dd/mm/aaaa".
+ * @pure
+ * @param {Date} fecha - Fecha a formatear
+ * @returns {string} Fecha formateada como "dd/mm/aaaa"
  */
 function formatoFechaEdicion(fecha) {
     return formatoFecha(fecha);
 }
 /**
- * Helper: Convierte string de fecha de vuelta a Date (función pura).
+ * Convierte un string de fecha al formato "dd/mm/aaaa" a un objeto Date.
+ * @pure
+ * @param {string} fechaStr - String con la fecha a parsear
+ * @returns {Date} Objeto Date con la fecha parseada, o Date(9999, 0, 1) si es inválida
  */
 function parseFechaVencimiento(fechaStr) {
     if (fechaStr === "Sin datos") {
@@ -138,7 +176,10 @@ function parseFechaVencimiento(fechaStr) {
     return new Date(9999, 0, 1);
 }
 /**
- * Procesa una fecha ingresada (función pura).
+ * Procesa y valida una fecha ingresada por el usuario.
+ * @pure
+ * @param {string} fechaInput - String con la fecha a procesar
+ * @returns {Date} Objeto Date con la fecha procesada, o Date(9999, 0, 1) si es inválida
  */
 function procesarFechaVencimiento(fechaInput) {
     const tempFecha = new Date(fechaInput);
@@ -148,7 +189,10 @@ function procesarFechaVencimiento(fechaInput) {
     return tempFecha;
 }
 /**
- * Controla que la entrada esté entre 1 y 3 (función pura).
+ * Valida que la entrada sea un número entre 1 y 3.
+ * @pure
+ * @param {string} entrada - String a validar
+ * @returns {string} La entrada si es válida, string vacío si no lo es
  */
 function control(entrada) {
     const numero = parseInt(entrada);
@@ -158,7 +202,10 @@ function control(entrada) {
     return "";
 }
 /**
- * Muestra la dificultad con emoji (función pura).
+ * Convierte un nivel de dificultad a una representación visual con emojis.
+ * @pure
+ * @param {Dificultad} dificultad - El nivel de dificultad
+ * @returns {string} Representación visual con emojis (😎🟡🟡, 😐😐🟡, o 😭😭😭)
  */
 function mostrarDificultad(dificultad) {
     switch (dificultad) {
@@ -173,7 +220,10 @@ function mostrarDificultad(dificultad) {
     }
 }
 /**
- * Muestra el estado con texto descriptivo (función pura).
+ * Convierte un estado a su representación textual.
+ * @pure
+ * @param {Estado} estado - El estado a convertir
+ * @returns {string} Texto descriptivo del estado ("Pendiente", "En Curso", "Terminada")
  */
 function mostrarEstado(estado) {
     switch (estado) {
@@ -188,7 +238,11 @@ function mostrarEstado(estado) {
     }
 }
 /**
- * Genera el contenido del mensaje según el tipo (función pura).
+ * Genera el contenido del mensaje según el tipo especificado.
+ * @pure
+ * @param {TipoMensaje} tipo - Tipo de mensaje a generar
+ * @param {Tarea[]} [datos] - Array de tareas (opcional, requerido para ciertos tipos)
+ * @returns {string} El mensaje formateado correspondiente al tipo
  */
 function obtenerMensaje(tipo, datos) {
     switch (tipo) {
@@ -249,8 +303,14 @@ function obtenerMensaje(tipo, datos) {
     }
 }
 // ============================================
-// FUNCIÓN IMPURA - Imprime en pantalla
+// FUNCIONES IMPURAS - Interfaz de usuario
 // ============================================
+/**
+ * Muestra las estadísticas de las tareas de forma visual en la consola.
+ * @impure Escribe en consola y solicita entrada del usuario
+ * @param {Tarea[]} tareas - Array de tareas a analizar
+ * @returns {void}
+ */
 function mostrarEstadisticas(tareas) {
     console.clear();
     if (contarTotalTareas(tareas) === 0) {
@@ -267,7 +327,12 @@ function mostrarEstadisticas(tareas) {
     }
 }
 /**
- * Imprime un mensaje en pantalla según el tipo.
+ * Imprime un mensaje en pantalla según el tipo especificado.
+ * @impure Escribe en consola
+ * @param {TipoMensaje} tipo - Tipo de mensaje a imprimir
+ * @param {Tarea[]} [datos] - Array de tareas (opcional, requerido para ciertos tipos)
+ * @param {boolean} [limpiarPantalla=false] - Si true, limpia la consola antes de imprimir
+ * @returns {void}
  */
 function imprimir(tipo, datos, limpiarPantalla = false) {
     if (limpiarPantalla) {
@@ -276,7 +341,12 @@ function imprimir(tipo, datos, limpiarPantalla = false) {
     const mensaje = obtenerMensaje(tipo, datos);
     console.log(mensaje);
 }
-/*recibe cadena de carecter e imprime en consola */
+/**
+ * Imprime una cadena de texto directamente en la consola.
+ * @impure Escribe en consola
+ * @param {string} cadena - Cadena de texto a imprimir
+ * @returns {void}
+ */
 function imprimirCadena(cadena) {
     console.log(cadena);
 }

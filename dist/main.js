@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * @fileoverview Punto de entrada principal de la aplicación.
+ * Gestiona el bucle principal del programa y la coordinación entre módulos.
+ */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -15,9 +19,11 @@ const prompt = (0, prompt_sync_1.default)({ sigint: true });
 // ============================================
 /**
  * Procesa la opción seleccionada y retorna el nuevo estado de tareas.
- * @param {number} opcion - La opción del menú.
- * @param {Tarea[]} tareas - El array de tareas actual.
- * @returns {Tarea[]} El nuevo array de tareas.
+ * Solo modifica el estado para la opción de agregar tarea.
+ * @pure
+ * @param {number} opcion - La opción del menú (1-4 o 0)
+ * @param {Tarea[]} tareas - El array de tareas actual
+ * @returns {Tarea[]} El array de tareas (sin modificaciones excepto para opción 3)
  */
 function procesarOpcion(opcion, tareas) {
     switch (opcion) {
@@ -39,16 +45,20 @@ function procesarOpcion(opcion, tareas) {
 // FUNCIONES IMPURAS
 // ============================================
 /**
- * Muestra el menú principal.
+ * Muestra el menú principal en la consola.
+ * @impure Escribe en consola
+ * @returns {void}
  */
 function mostrarMenuPrincipal() {
     (0, utils_js_1.imprimir)(types_js_1.TipoMensaje.MENU_PRINCIPAL);
 }
 /**
- * Ejecuta acciones según la opción (side effects).
- * @param {number} opcion - La opción del menú.
- * @param {Tarea[]} tareas - El array de tareas.
- * @returns {Tarea[]} El array de tareas (potencialmente modificado).
+ * Ejecuta acciones según la opción seleccionada.
+ * Maneja la interacción del usuario según la opción del menú.
+ * @impure Interactúa con el usuario e I/O
+ * @param {number} opcion - La opción del menú
+ * @param {Tarea[]} tareas - El array de tareas
+ * @returns {Tarea[]} El array de tareas (potencialmente modificado)
  */
 function ejecutarAccionSegunOpcion(opcion, tareas) {
     switch (opcion) {
@@ -76,12 +86,17 @@ function ejecutarAccionSegunOpcion(opcion, tareas) {
 // ============================================
 /**
  * Función principal del programa.
+ * Ejecuta el bucle principal de la aplicación.
+ * Carga tareas del archivo, presenta el menú y procesa opciones del usuario.
+ * @impure Interactúa con usuario, archivos y consola
+ * @returns {void}
  */
 function main() {
     // CARGAR tareas desde el archivo al iniciar
     let tareas = (0, persistencia_js_1.leerTareasDesdeArchivo)("tareas");
     console.log(`Tareas cargadas desde el archivo\n`);
-    prompt("Presione enter para continuar...");
+    (0, utils_js_1.imprimir)(types_js_1.TipoMensaje.PRESIONE_ENTER);
+    prompt("");
     let opcion = -1;
     while (opcion !== 0) {
         console.clear();

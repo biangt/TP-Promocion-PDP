@@ -1,9 +1,12 @@
 "use strict";
+/**
+ * @fileoverview Módulo para la gestión de listas de tareas.
+ * Contiene funciones puras para filtrado y búsqueda, y funciones impuras para interfaz.
+ */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.obtenerTareasActivas = obtenerTareasActivas;
 exports.agregarTareaALista = agregarTareaALista;
 exports.filtrarTareasPorEstado = filtrarTareasPorEstado;
 exports.buscarTareasPorNombre = buscarTareasPorNombre;
@@ -22,19 +25,21 @@ const prompt = (0, prompt_sync_1.default)({ sigint: true });
 // FUNCIONES PURAS - Transformaciones de datos
 // ============================================
 /**
- * Filtra las tareas NO eliminadas (función pura).
- */
-function obtenerTareasActivas(tareas) {
-    return tareas.filter(tarea => !tarea.getEliminada());
-}
-/**
- * Agrega una tarea al arreglo de tareas de forma INMUTABLE.
+ * Agrega una nueva tarea al array de forma inmutable.
+ * @pure
+ * @param {Tarea[]} tareas - Array original de tareas
+ * @param {Tarea} nuevaTarea - Tarea a agregar
+ * @returns {Tarea[]} Nuevo array con la tarea agregada
  */
 function agregarTareaALista(tareas, nuevaTarea) {
     return [...tareas, nuevaTarea];
 }
 /**
- * Filtra tareas por estado (función pura).
+ * Filtra las tareas por un estado específico.
+ * @pure
+ * @param {Tarea[]} tareas - Array de tareas
+ * @param {Estado} estadoBuscado - El estado a filtrar
+ * @returns {Tarea[]} Array con tareas que coinciden con el estado
  */
 function filtrarTareasPorEstado(tareas, estadoBuscado) {
     return tareas.filter(function (tarea) {
@@ -42,7 +47,11 @@ function filtrarTareasPorEstado(tareas, estadoBuscado) {
     });
 }
 /**
- * Busca tareas que contengan un texto en su nombre (función pura).
+ * Busca tareas que contengan un texto en su nombre (búsqueda case-insensitive).
+ * @pure
+ * @param {Tarea[]} tareas - Array de tareas
+ * @param {string} textoBusqueda - Texto a buscar en los nombres
+ * @returns {Tarea[]} Array con tareas cuyo nombre contiene el texto buscado
  */
 function buscarTareasPorNombre(tareas, textoBusqueda) {
     const textoBusquedaLower = textoBusqueda.toLowerCase();
@@ -51,14 +60,22 @@ function buscarTareasPorNombre(tareas, textoBusqueda) {
     });
 }
 /**
- * Obtiene las tareas filtradas por estado (función pura).
+ * Obtiene las tareas filtradas por un estado específico.
+ * @pure
+ * @param {Tarea[]} tareas - Array de tareas
+ * @param {Estado} estadoBuscado - El estado a filtrar
+ * @returns {Tarea[]|null} Array filtrado o null si no hay resultados
  */
 function obtenerTareasFiltradas(tareas, estadoBuscado) {
     const tareasFiltradas = filtrarTareasPorEstado(tareas, estadoBuscado);
     return tareasFiltradas.length === 0 ? null : tareasFiltradas;
 }
 /**
- * Busca tareas por nombre (función pura).
+ * Busca tareas que coincidan con un texto de búsqueda.
+ * @pure
+ * @param {Tarea[]} tareas - Array de tareas
+ * @param {string} textoBusqueda - Texto a buscar
+ * @returns {Tarea[]|null} Array de tareas encontradas o null si no hay resultados
  */
 function obtenerTareasEncontradas(tareas, textoBusqueda) {
     const tareasEncontradas = buscarTareasPorNombre(tareas, textoBusqueda);
@@ -68,12 +85,16 @@ function obtenerTareasEncontradas(tareas, textoBusqueda) {
 // FUNCIONES IMPURAS - Visualización e interacción
 // ============================================
 /**
- * Muestra las tareas filtradas por estado.
- * Retorna el array completo actualizado si se editó alguna tarea.
+ * Muestra las tareas filtradas por un estado específico.
+ * Permite editar una tarea seleccionada.
+ * @impure Interactúa con el usuario
+ * @param {Tarea[]} tareas - Array completo de tareas
+ * @param {Estado} estadoBuscado - Estado para filtrar
+ * @returns {Tarea[]} Array actualizado de tareas (con cambios si se editó alguna)
  */
 function verTareaFiltro(tareas, estadoBuscado) {
     // Primero filtrar solo las activas (no eliminadas)
-    const tareasActivas = obtenerTareasActivas(tareas);
+    const tareasActivas = (0, utils_js_1.filtrarTareasActivas)(tareas);
     const tareasFiltradas = obtenerTareasFiltradas(tareasActivas, estadoBuscado);
     if (tareasFiltradas === null) {
         (0, utils_js_1.imprimir)(types_js_1.TipoMensaje.NO_HAY_TAREAS_ESTADO);
@@ -92,11 +113,15 @@ function verTareaFiltro(tareas, estadoBuscado) {
     return tareas;
 }
 /**
- * Busca y muestra tareas por nombre (solo activas).
+ * Busca y muestra tareas que coincidan con el texto de búsqueda.
+ * @impure Interactúa con el usuario
+ * @param {Tarea[]} tareas - Array de tareas
+ * @param {string} textoBusqueda - Texto a buscar
+ * @returns {void}
  */
 function buscarConIndexOf(tareas, textoBusqueda) {
     // Primero filtrar solo las activas
-    const tareasActivas = obtenerTareasActivas(tareas);
+    const tareasActivas = (0, utils_js_1.filtrarTareasActivas)(tareas);
     const tareasEncontradas = obtenerTareasEncontradas(tareasActivas, textoBusqueda);
     if (tareasEncontradas === null) {
         (0, utils_js_1.imprimir)(types_js_1.TipoMensaje.NO_SE_ENCONTRARON_TAREAS);
@@ -106,11 +131,14 @@ function buscarConIndexOf(tareas, textoBusqueda) {
     }
 }
 /**
- * Maneja el menú de ver tareas con sus opciones.
+ * Maneja el menú de ver tareas con todas sus opciones de filtrado.
+ * @impure Interactúa con el usuario
+ * @param {Tarea[]} tareas - Array de tareas
+ * @returns {Tarea[]} Array actualizado de tareas
  */
 function manejarVerTareas(tareas) {
     // Filtrar solo tareas activas
-    const tareasActivas = obtenerTareasActivas(tareas);
+    const tareasActivas = (0, utils_js_1.filtrarTareasActivas)(tareas);
     if (tareasActivas.length === 0) {
         (0, utils_js_1.imprimir)(types_js_1.TipoMensaje.NO_HAY_TAREAS, undefined, true);
         (0, utils_js_1.imprimir)(types_js_1.TipoMensaje.PRESIONE_ENTER);
@@ -148,12 +176,16 @@ function manejarVerTareas(tareas) {
     }
 }
 /**
- * Maneja el proceso de búsqueda de tareas.
+ * Maneja el proceso completo de búsqueda de tareas.
+ * Solicita el término de búsqueda al usuario y muestra resultados.
+ * @impure Interactúa con el usuario
+ * @param {Tarea[]} tareas - Array de tareas
+ * @returns {void}
  */
 function manejarBuscarTareas(tareas) {
     console.clear();
     // Filtrar solo tareas activas
-    const tareasActivas = obtenerTareasActivas(tareas);
+    const tareasActivas = (0, utils_js_1.filtrarTareasActivas)(tareas);
     if (tareasActivas.length === 0) {
         (0, utils_js_1.imprimir)(types_js_1.TipoMensaje.NO_HAY_TAREAS);
         (0, utils_js_1.imprimir)(types_js_1.TipoMensaje.PRESIONE_ENTER);

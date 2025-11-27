@@ -1,9 +1,12 @@
 "use strict";
+/**
+ * @fileoverview Módulo para la creación, edición y gestión de tareas individuales.
+ * Contiene funciones puras para transformaciones y funciones impuras para interacción con usuario.
+ */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.crearTareaVacia = crearTareaVacia;
 exports.actualizarNombre = actualizarNombre;
 exports.actualizarDescripcion = actualizarDescripcion;
 exports.actualizarDificultad = actualizarDificultad;
@@ -26,51 +29,85 @@ const prompt = (0, prompt_sync_1.default)({ sigint: true });
 // FUNCIONES PURAS - Creación y transformación
 // ============================================
 /**
- * Crea una nueva instancia de Tarea vacía (función pura).
+ * Crea una nueva instancia de Tarea vacía con valores por defecto.
+ * @pure
+ * @returns {Tarea} Nueva tarea con valores iniciales por defecto
  */
-function crearTareaVacia() {
-    return new tarea_js_1.Tarea("", "Sin descripcion", types_js_1.Dificultad.FACIL, types_js_1.Estado.PENDIENTE, new Date(9999, 0, 1));
-}
+/*export function crearTareaVacia(): Tarea {
+    return new Tarea(
+        "",
+        "Sin descripcion",
+        Dificultad.FACIL,
+        Estado.PENDIENTE,
+        new Date(9999, 0, 1)
+    );
+}*/
 /**
- * Actualiza el nombre creando una NUEVA instancia (función pura).
+ * Actualiza el nombre de una tarea creando una NUEVA instancia (inmutable).
+ * @pure
+ * @param {Tarea} tarea - Tarea original
+ * @param {string} nuevoNombre - Nuevo nombre para la tarea
+ * @returns {Tarea} Nueva instancia con el nombre actualizado
  */
 function actualizarNombre(tarea, nuevoNombre) {
     return new tarea_js_1.Tarea(nuevoNombre, tarea.getDescripcion(), tarea.getDificultad(), tarea.getEstado(), (0, utils_js_1.parseFechaVencimiento)(tarea.getFechaVencimiento()), tarea.getId(), tarea.getFechaCreacionDate(), tarea.getFechaCreacionDate(), tarea.getEliminada());
 }
 /**
- * Actualiza la descripción creando una NUEVA instancia (función pura).
+ * Actualiza la descripción creando una NUEVA instancia (inmutable).
+ * @pure
+ * @param {Tarea} tarea - Tarea original
+ * @param {string} nuevaDescripcion - Nueva descripción para la tarea
+ * @returns {Tarea} Nueva instancia con la descripción actualizada
  */
 function actualizarDescripcion(tarea, nuevaDescripcion) {
     const descripcion = nuevaDescripcion.length > 0 ? nuevaDescripcion : "Sin descripcion";
     return new tarea_js_1.Tarea(tarea.getNombre(), descripcion, tarea.getDificultad(), tarea.getEstado(), (0, utils_js_1.parseFechaVencimiento)(tarea.getFechaVencimiento()), tarea.getId(), tarea.getFechaCreacionDate(), tarea.getFechaCreacionDate(), tarea.getEliminada());
 }
 /**
- * Actualiza la dificultad creando una NUEVA instancia (función pura).
+ * Actualiza la dificultad creando una NUEVA instancia (inmutable).
+ * @pure
+ * @param {Tarea} tarea - Tarea original
+ * @param {Dificultad} nuevaDificultad - Nuevo nivel de dificultad
+ * @returns {Tarea} Nueva instancia con la dificultad actualizada
  */
 function actualizarDificultad(tarea, nuevaDificultad) {
     return new tarea_js_1.Tarea(tarea.getNombre(), tarea.getDescripcion(), nuevaDificultad, tarea.getEstado(), (0, utils_js_1.parseFechaVencimiento)(tarea.getFechaVencimiento()), tarea.getId(), tarea.getFechaCreacionDate(), tarea.getFechaCreacionDate(), tarea.getEliminada());
 }
 /**
- * Actualiza el estado creando una NUEVA instancia (función pura).
+ * Actualiza el estado creando una NUEVA instancia (inmutable).
+ * @pure
+ * @param {Tarea} tarea - Tarea original
+ * @param {Estado} nuevoEstado - Nuevo estado para la tarea
+ * @returns {Tarea} Nueva instancia con el estado actualizado
  */
 function actualizarEstado(tarea, nuevoEstado) {
     return new tarea_js_1.Tarea(tarea.getNombre(), tarea.getDescripcion(), tarea.getDificultad(), nuevoEstado, (0, utils_js_1.parseFechaVencimiento)(tarea.getFechaVencimiento()), tarea.getId(), tarea.getFechaCreacionDate(), tarea.getFechaCreacionDate(), tarea.getEliminada());
 }
 /**
- * Actualiza la fecha de vencimiento creando una NUEVA instancia (función pura).
+ * Actualiza la fecha de vencimiento creando una NUEVA instancia (inmutable).
+ * @pure
+ * @param {Tarea} tarea - Tarea original
+ * @param {Date} nuevaFecha - Nueva fecha de vencimiento
+ * @returns {Tarea} Nueva instancia con la fecha actualizada
  */
 function actualizarFechaVencimiento(tarea, nuevaFecha) {
     return new tarea_js_1.Tarea(tarea.getNombre(), tarea.getDescripcion(), tarea.getDificultad(), tarea.getEstado(), nuevaFecha, tarea.getId(), tarea.getFechaCreacionDate(), tarea.getFechaCreacionDate(), tarea.getEliminada());
 }
 /**
- * Actualiza la fecha de edición creando una NUEVA instancia (función pura).
+ * Actualiza la fecha de edición creando una NUEVA instancia (inmutable).
+ * @pure
+ * @param {Tarea} tarea - Tarea original
+ * @returns {Tarea} Nueva instancia con la fecha de edición actualizada a la fecha actual
  */
 function actualizarFechaEdicion(tarea) {
     return new tarea_js_1.Tarea(tarea.getNombre(), tarea.getDescripcion(), tarea.getDificultad(), tarea.getEstado(), (0, utils_js_1.parseFechaVencimiento)(tarea.getFechaVencimiento()), tarea.getId(), tarea.getFechaCreacionDate(), new Date(), // Nueva fecha de edición
     tarea.getEliminada());
 }
 /**
- * Elimina lógicamente una tarea creando una NUEVA instancia (función pura).
+ * Marca una tarea como eliminada creando una NUEVA instancia (eliminación lógica).
+ * @pure
+ * @param {Tarea} tarea - Tarea original
+ * @returns {Tarea} Nueva instancia marcada como eliminada
  */
 function eliminarTareaLogica(tarea) {
     return new tarea_js_1.Tarea(tarea.getNombre(), tarea.getDescripcion(), tarea.getDificultad(), tarea.getEstado(), (0, utils_js_1.parseFechaVencimiento)(tarea.getFechaVencimiento()), tarea.getId(), tarea.getFechaCreacionDate(), new Date(), // Actualiza fecha de edición
@@ -78,13 +115,20 @@ function eliminarTareaLogica(tarea) {
     );
 }
 /**
- * Valida un título (función pura).
+ * Valida que un título sea válido (mínimo 4 caracteres).
+ * @pure
+ * @param {string} titulo - Título a validar
+ * @returns {boolean} true si el título es válido, false en caso contrario
  */
 function esTituloValido(titulo) {
     return titulo.length >= 4;
 }
 /**
- * Busca una tarea por ID (función pura).
+ * Busca una tarea en el array por su identificador único.
+ * @pure
+ * @param {Tarea[]} tareas - Array de tareas
+ * @param {string} id - ID de la tarea a buscar
+ * @returns {Tarea|undefined} La tarea encontrada o undefined si no existe
  */
 function buscarTareaPorId(tareas, id) {
     return tareas.find(function (tarea) {
@@ -92,7 +136,12 @@ function buscarTareaPorId(tareas, id) {
     });
 }
 /**
- * Reemplaza una tarea por ID (función pura).
+ * Reemplaza una tarea en el array creando un NUEVO array (inmutable).
+ * @pure
+ * @param {Tarea[]} tareas - Array original de tareas
+ * @param {string} id - ID de la tarea a reemplazar
+ * @param {Tarea} tareaActualizada - Nueva instancia de tarea con actualizaciones
+ * @returns {Tarea[]} Nuevo array con la tarea reemplazada
  */
 function reemplazarTareaPorId(tareas, id, tareaActualizada) {
     return tareas.map(function (tarea) {
@@ -100,7 +149,10 @@ function reemplazarTareaPorId(tareas, id, tareaActualizada) {
     });
 }
 /**
- * Genera texto de detalle (función pura).
+ * Genera un string con el detalle completo de una tarea.
+ * @pure
+ * @param {Tarea} tarea - Tarea a detallar
+ * @returns {string} String formateado con todos los detalles de la tarea
  */
 function generarDetalleTexto(tarea) {
     const estadoConTexto = (0, utils_js_1.mostrarEstado)(tarea.getEstado());
@@ -115,6 +167,12 @@ Fecha de vencimiento: ${tarea.getFechaVencimiento()}`;
 // ============================================
 // FUNCIONES IMPURAS - Interacción con usuario
 // ============================================
+/**
+ * Solicita el título de una nueva tarea al usuario.
+ * Valida que tenga al menos 4 caracteres.
+ * @impure Solicita entrada del usuario
+ * @returns {string} Título validado ingresado por el usuario
+ */
 function solicitarTitulo() {
     let entrada = prompt("Ingrese el título de la tarea (Al menos 4 caracteres):");
     while (!esTituloValido(entrada)) {
@@ -123,10 +181,20 @@ function solicitarTitulo() {
     }
     return entrada;
 }
+/**
+ * Solicita la descripción de una tarea al usuario.
+ * @impure Solicita entrada del usuario
+ * @returns {string} Descripción ingresada o "Sin descripción" si está vacía
+ */
 function solicitarDescripcion() {
     const entrada = prompt("Ingrese la descripcion de la tarea:");
     return entrada.length > 0 ? entrada : "Sin descripción";
 }
+/**
+ * Solicita el nivel de dificultad de una tarea al usuario.
+ * @impure Solicita entrada del usuario
+ * @returns {Dificultad} Nivel de dificultad seleccionado, Dificultad.FACIL por defecto
+ */
 function solicitarDificultad() {
     let entrada = prompt("Ingrese la dificultad de la nueva tarea [1] Fácil [2] Media [3] Dificil: ");
     entrada = (0, utils_js_1.control)(entrada);
@@ -135,6 +203,11 @@ function solicitarDificultad() {
     }
     return types_js_1.Dificultad.FACIL;
 }
+/**
+ * Solicita el estado inicial de una tarea al usuario.
+ * @impure Solicita entrada del usuario
+ * @returns {Estado} Estado seleccionado, Estado.PENDIENTE por defecto
+ */
 function solicitarEstado() {
     let entrada = prompt("Ingrese el estado de la nueva tarea [1] Pendiente [2] En curso [3] Terminada: ");
     entrada = (0, utils_js_1.control)(entrada);
@@ -143,6 +216,11 @@ function solicitarEstado() {
     }
     return types_js_1.Estado.PENDIENTE;
 }
+/**
+ * Solicita la fecha de vencimiento de una tarea al usuario.
+ * @impure Solicita entrada del usuario
+ * @returns {Date} Fecha de vencimiento procesada
+ */
 function solicitarFechaVencimiento() {
     const fechaInput = prompt("¿Cuando vence? (formato: aaaa/mm/dd): ");
     const fechaProcesada = (0, utils_js_1.procesarFechaVencimiento)(fechaInput);
@@ -152,7 +230,9 @@ function solicitarFechaVencimiento() {
     return fechaProcesada;
 }
 /**
- * Crea una tarea con datos del usuario.
+ * Crea una tarea completamente nueva solicitando todos los datos al usuario.
+ * @impure Solicita múltiples entradas del usuario
+ * @returns {Tarea} Nueva tarea con datos proporcionados por el usuario
  */
 function crearTareaConDatos() {
     const titulo = solicitarTitulo();
@@ -163,7 +243,11 @@ function crearTareaConDatos() {
     return new tarea_js_1.Tarea(titulo, descripcion, dificultad, estado, fechaVencimiento);
 }
 /**
- * Solicita edición de una tarea (retorna NUEVA instancia).
+ * Solicita al usuario la edición de una tarea existente.
+ * Permite modificar descripción, dificultad, estado y fecha de vencimiento.
+ * @impure Solicita múltiples entradas del usuario
+ * @param {Tarea} tareaOriginal - Tarea a editar
+ * @returns {Tarea} Nueva instancia con los cambios realizados
  */
 function solicitarEdicionTarea(tareaOriginal) {
     let tareaEditada = tareaOriginal;
@@ -215,7 +299,10 @@ function solicitarEdicionTarea(tareaOriginal) {
     return tareaEditada;
 }
 /**
- * Solicita confirmación para eliminar (función impura).
+ * Solicita confirmación del usuario para eliminar una tarea.
+ * @impure Solicita entrada del usuario
+ * @param {Tarea} tarea - Tarea que se va a eliminar
+ * @returns {boolean} true si el usuario confirma la eliminación, false en caso contrario
  */
 function solicitarConfirmacionEliminacion(tarea) {
     console.log(`\n  ¿Está seguro que desea eliminar la tarea "${tarea.getNombre()}"?`);
@@ -223,8 +310,10 @@ function solicitarConfirmacionEliminacion(tarea) {
     return respuesta === 's' || respuesta === 'si' || respuesta === 'sí';
 }
 /**
- * Muestra detalle y permite edición o eliminación.
- * Retorna la tarea editada/eliminada o null.
+ * Muestra el detalle de una tarea y permite al usuario editarla o eliminarla.
+ * @impure Interactúa con el usuario y modifica el estado
+ * @param {Tarea[]} tareasDisponibles - Array de tareas disponibles para seleccionar
+ * @returns {Tarea|null} Tarea editada/eliminada o null si no se realizó ningún cambio
  */
 function detalleYEdicionTarea(tareasDisponibles) {
     let entrada = prompt("Ingrese el número de tarea para ver en detalle o '0' para volver al menu: ");

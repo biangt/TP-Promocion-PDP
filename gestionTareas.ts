@@ -15,28 +15,13 @@ const prompt = promptSync({ sigint: true });
 // ============================================
 
 /**
- * Crea una nueva instancia de Tarea vacía con valores por defecto.
- * @pure
- * @returns {Tarea} Nueva tarea con valores iniciales por defecto
- */
-export function crearTareaVacia(): Tarea {
-    return new Tarea(
-        "",
-        "Sin descripcion",
-        Dificultad.FACIL,
-        Estado.PENDIENTE,
-        new Date(9999, 0, 1)
-    );
-}
-
-/**
  * Actualiza el nombre de una tarea creando una NUEVA instancia (inmutable).
  * @pure
  * @param {Tarea} tarea - Tarea original
  * @param {string} nuevoNombre - Nuevo nombre para la tarea
  * @returns {Tarea} Nueva instancia con el nombre actualizado
  */
-export function actualizarNombre(tarea: Tarea, nuevoNombre: string): Tarea {
+/*export function actualizarNombre(tarea: Tarea, nuevoNombre: string): Tarea {
     return new Tarea(
         nuevoNombre,
         tarea.getDescripcion(),
@@ -48,7 +33,7 @@ export function actualizarNombre(tarea: Tarea, nuevoNombre: string): Tarea {
         tarea.getFechaCreacionDate(),
         tarea.getEliminada()
     );
-}
+}*/
 
 /**
  * Actualiza la descripción creando una NUEVA instancia (inmutable).
@@ -192,11 +177,11 @@ export function esTituloValido(titulo: string): boolean {
  * @param {string} id - ID de la tarea a buscar
  * @returns {Tarea|undefined} La tarea encontrada o undefined si no existe
  */
-export function buscarTareaPorId(tareas: Tarea[], id: string): Tarea | undefined {
+/*export function buscarTareaPorId(tareas: Tarea[], id: string): Tarea | undefined {
     return tareas.find(function(tarea) {
         return tarea.getId() === id;
     });
-}
+}*/
 
 /**
  * Reemplaza una tarea en el array creando un NUEVO array (inmutable).

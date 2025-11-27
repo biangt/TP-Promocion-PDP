@@ -357,12 +357,3 @@ export function imprimir(tipo: TipoMensaje, datos?: Tarea[], limpiarPantalla: bo
     console.log(mensaje);
 }
 
-/**
- * Imprime una cadena de texto directamente en la consola.
- * @impure Escribe en consola
- * @param {string} cadena - Cadena de texto a imprimir
- * @returns {void}
- */
-export function imprimirCadena(cadena: string): void {
-    console.log(cadena);
-}

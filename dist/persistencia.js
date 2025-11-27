@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * @fileoverview Módulo de persistencia de tareas.
+ * Maneja la lectura y escritura de tareas en archivos JSON.
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -45,14 +49,18 @@ const tarea_js_1 = require("./tarea.js");
 // ============================================
 /**
  * Convierte un array de Tareas a formato serializable (JSON).
- * Función pura: no muta nada, solo transforma.
+ * @pure
+ * @param {Tarea[]} tareas - Array de tareas a convertir
+ * @returns {any[]} Array de objetos con datos de tareas serializables
  */
 function tareasAJSON(tareas) {
     return tareas.map(tarea => tarea.toJSON());
 }
 /**
  * Convierte datos JSON a array de Tareas.
- * Función pura: no muta nada, solo transforma.
+ * @pure
+ * @param {any[]} datos - Array de objetos en formato JSON
+ * @returns {Tarea[]} Array de instancias de Tarea, array vacío si hay error
  */
 function JSONATareas(datos) {
     try {
@@ -71,7 +79,9 @@ function JSONATareas(datos) {
 // ============================================
 /**
  * Lee tareas desde un archivo JSON.
- * Función impura: interactúa con el sistema de archivos.
+ * @impure Interactúa con el sistema de archivos
+ * @param {string} [filename="tareas"] - Nombre del archivo a leer (sin extensión)
+ * @returns {Tarea[]} Array de tareas leídas, array vacío si el archivo no existe o hay error
  */
 function leerTareasDesdeArchivo(filename = "tareas") {
     // Construir ruta del archivo
@@ -98,7 +108,10 @@ function leerTareasDesdeArchivo(filename = "tareas") {
 }
 /**
  * Guarda tareas en un archivo JSON.
- * Función impura: interactúa con el sistema de archivos.
+ * @impure Interactúa con el sistema de archivos
+ * @param {Tarea[]} tareas - Array de tareas a guardar
+ * @param {string} [filename="tareas"] - Nombre del archivo donde guardar (sin extensión)
+ * @returns {boolean} true si se guardó exitosamente, false si hubo error
  */
 function guardarTareasEnArchivo(tareas, filename = "tareas") {
     // Construir ruta del archivo
