@@ -85,7 +85,7 @@ function JSONATareas(datos) {
  */
 function leerTareasDesdeArchivo(filename = "tareas") {
     // Construir ruta del archivo
-    const filepath = path.join(__dirname, "..", "..", `${filename}.json`);
+    const filepath = path.join(__dirname, "..", `${filename}.json`);
     try {
         // Verificar si el archivo existe
         if (fs.existsSync(filepath)) {
@@ -115,7 +115,7 @@ function leerTareasDesdeArchivo(filename = "tareas") {
  */
 function guardarTareasEnArchivo(tareas, filename = "tareas") {
     // Construir ruta del archivo
-    const filepath = path.join(__dirname, "..", "..", `${filename}.json`);
+    const filepath = path.join(__dirname, "..", `${filename}.json`);
     try {
         // Convertir instancias de Tarea a objetos serializables
         const datosSerializables = tareasAJSON(tareas);

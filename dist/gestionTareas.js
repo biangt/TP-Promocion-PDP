@@ -7,7 +7,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.actualizarNombre = actualizarNombre;
 exports.actualizarDescripcion = actualizarDescripcion;
 exports.actualizarDificultad = actualizarDificultad;
 exports.actualizarEstado = actualizarEstado;
@@ -15,7 +14,6 @@ exports.actualizarFechaVencimiento = actualizarFechaVencimiento;
 exports.actualizarFechaEdicion = actualizarFechaEdicion;
 exports.eliminarTareaLogica = eliminarTareaLogica;
 exports.esTituloValido = esTituloValido;
-exports.buscarTareaPorId = buscarTareaPorId;
 exports.reemplazarTareaPorId = reemplazarTareaPorId;
 exports.generarDetalleTexto = generarDetalleTexto;
 exports.crearTareaConDatos = crearTareaConDatos;
@@ -29,29 +27,25 @@ const prompt = (0, prompt_sync_1.default)({ sigint: true });
 // FUNCIONES PURAS - Creación y transformación
 // ============================================
 /**
- * Crea una nueva instancia de Tarea vacía con valores por defecto.
- * @pure
- * @returns {Tarea} Nueva tarea con valores iniciales por defecto
- */
-/*export function crearTareaVacia(): Tarea {
-    return new Tarea(
-        "",
-        "Sin descripcion",
-        Dificultad.FACIL,
-        Estado.PENDIENTE,
-        new Date(9999, 0, 1)
-    );
-}*/
-/**
  * Actualiza el nombre de una tarea creando una NUEVA instancia (inmutable).
  * @pure
  * @param {Tarea} tarea - Tarea original
  * @param {string} nuevoNombre - Nuevo nombre para la tarea
  * @returns {Tarea} Nueva instancia con el nombre actualizado
  */
-function actualizarNombre(tarea, nuevoNombre) {
-    return new tarea_js_1.Tarea(nuevoNombre, tarea.getDescripcion(), tarea.getDificultad(), tarea.getEstado(), (0, utils_js_1.parseFechaVencimiento)(tarea.getFechaVencimiento()), tarea.getId(), tarea.getFechaCreacionDate(), tarea.getFechaCreacionDate(), tarea.getEliminada());
-}
+/*export function actualizarNombre(tarea: Tarea, nuevoNombre: string): Tarea {
+    return new Tarea(
+        nuevoNombre,
+        tarea.getDescripcion(),
+        tarea.getDificultad(),
+        tarea.getEstado(),
+        parseFechaVencimiento(tarea.getFechaVencimiento()),
+        tarea.getId(),
+        tarea.getFechaCreacionDate(),
+        tarea.getFechaCreacionDate(),
+        tarea.getEliminada()
+    );
+}*/
 /**
  * Actualiza la descripción creando una NUEVA instancia (inmutable).
  * @pure
@@ -130,11 +124,11 @@ function esTituloValido(titulo) {
  * @param {string} id - ID de la tarea a buscar
  * @returns {Tarea|undefined} La tarea encontrada o undefined si no existe
  */
-function buscarTareaPorId(tareas, id) {
-    return tareas.find(function (tarea) {
+/*export function buscarTareaPorId(tareas: Tarea[], id: string): Tarea | undefined {
+    return tareas.find(function(tarea) {
         return tarea.getId() === id;
     });
-}
+}*/
 /**
  * Reemplaza una tarea en el array creando un NUEVO array (inmutable).
  * @pure

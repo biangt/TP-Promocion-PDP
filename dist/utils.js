@@ -24,7 +24,6 @@ exports.mostrarEstado = mostrarEstado;
 exports.obtenerMensaje = obtenerMensaje;
 exports.mostrarEstadisticas = mostrarEstadisticas;
 exports.imprimir = imprimir;
-exports.imprimirCadena = imprimirCadena;
 const prompt_sync_1 = __importDefault(require("prompt-sync"));
 const types_js_1 = require("./types.js");
 const prompt = (0, prompt_sync_1.default)({ sigint: true });
@@ -340,14 +339,5 @@ function imprimir(tipo, datos, limpiarPantalla = false) {
     }
     const mensaje = obtenerMensaje(tipo, datos);
     console.log(mensaje);
-}
-/**
- * Imprime una cadena de texto directamente en la consola.
- * @impure Escribe en consola
- * @param {string} cadena - Cadena de texto a imprimir
- * @returns {void}
- */
-function imprimirCadena(cadena) {
-    console.log(cadena);
 }
 //# sourceMappingURL=utils.js.map

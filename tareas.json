@@ -1,0 +1,35 @@
+[
+  {
+    "id": "0e9f0bd8-f5ca-453c-aa54-fb37d7abf0d0",
+    "nombre": "Estudiar base de datos",
+    "descripcion": "presentacion del ud",
+    "dificultad": 2,
+    "estado": 1,
+    "fechaCreacion": "2025-11-28T02:39:40.009Z",
+    "fechaEdicion": "2025-11-28T02:39:40.009Z",
+    "fechaVencimiento": "2025-11-28T03:00:00.000Z",
+    "eliminada": false
+  },
+  {
+    "id": "94779491-44bb-4fdc-91e7-c84999eda626",
+    "nombre": "Estudiar fisica",
+    "descripcion": "mesa de finales de dicimebre",
+    "dificultad": 3,
+    "estado": 1,
+    "fechaCreacion": "2025-11-28T02:40:02.897Z",
+    "fechaEdicion": "2025-11-28T02:40:02.897Z",
+    "fechaVencimiento": "9999-01-01T03:00:00.000Z",
+    "eliminada": false
+  },
+  {
+    "id": "4f6ce8d2-6cec-4396-9c25-988b2a3e5b2d",
+    "nombre": "zeus",
+    "descripcion": "un bebe",
+    "dificultad": 1,
+    "estado": 1,
+    "fechaCreacion": "2025-11-28T02:40:44.158Z",
+    "fechaEdicion": "2025-11-28T02:41:15.669Z",
+    "fechaVencimiento": "9999-01-01T03:00:00.000Z",
+    "eliminada": true
+  }
+]

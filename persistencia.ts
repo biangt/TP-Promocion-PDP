@@ -51,7 +51,7 @@ export function JSONATareas(datos: any[]): Tarea[] {
  */
 export function leerTareasDesdeArchivo(filename: string = "tareas"): Tarea[] {
     // Construir ruta del archivo
-    const filepath = path.join(__dirname, "..", "..", `${filename}.json`);
+    const filepath = path.join(__dirname, "..", `${filename}.json`);
     
     try {
         // Verificar si el archivo existe
@@ -83,7 +83,7 @@ export function leerTareasDesdeArchivo(filename: string = "tareas"): Tarea[] {
  */
 export function guardarTareasEnArchivo(tareas: Tarea[], filename: string = "tareas"): boolean {
     // Construir ruta del archivo
-    const filepath = path.join(__dirname, "..", "..", `${filename}.json`);
+    const filepath = path.join(__dirname, "..", `${filename}.json`);
     
     try {
         // Convertir instancias de Tarea a objetos serializables
